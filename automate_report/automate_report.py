@@ -10,7 +10,7 @@ from openpyxl.chart.label import DataLabelList
 
 input_file = 'input_data/supermarket_sales.xlsx'
 output_file = 'data_output/report_penjualan_2019.xlsx'
-webhook_url = 'https://discord.com/api/webhooks/1023952134464614481/fE8NOW-hUPUdPStwt0wlPArWjou4UsZPptcR8BeVXso9ZzioCD1pmK7jdyTny20Ffz24'
+webhook_url = ''
 
 ##PART 1 - LOAD DATASET
 df = pd.read_excel(input_file)
@@ -102,4 +102,3 @@ def send_to_discord():
                 file=excel_file)
 
 send_to_discord()
-
