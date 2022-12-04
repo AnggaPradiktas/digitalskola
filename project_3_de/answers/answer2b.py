@@ -8,13 +8,13 @@ from sqlalchemy import create_engine
 import logging
 
 #File path
-json_schema_path = '~/Downloads/de-sirclo-skill-test/sql/schemas/user_address.json'
-zip_small_path = '~/Downloads/de-sirclo-skill-test/temp/dataset-small.zip'
+json_schema_path = '~/Downloads/sql/schemas/user_address.json'
+zip_small_path = '~/Downloads/temp/dataset-small.zip'
 csv_small_name = 'dataset-small.csv'
-zip_medium_path = '~/Downloads/de-sirclo-skill-test/temp/dataset-medium.zip'
+zip_medium_path = '~/Downloads/temp/dataset-medium.zip'
 csv_medium_name = 'dataset-medium.csv'
 table_name = 'user_address_master'
-sql_queries_file = '~/Downloads/de-sirclo-skill-test/sql/queries/result_ingestion_user_address.sql'
+sql_queries_file = '~/Downloads/sql/queries/result_ingestion_user_address.sql'
 
 create_schema_sql = """ CREATE TABLE IF NOT EXISTS user_address_master {}; """
 
