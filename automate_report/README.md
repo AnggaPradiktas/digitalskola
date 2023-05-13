@@ -23,3 +23,21 @@ Untuk dapat mengirim report ini melalui discord, kita perlu membuat webhook terl
 - Create new Webhook
 - Salin Webhook URL
 
+## Step
+### Membuat virtual env
+Referensi: https://www.freecodecamp.org/news/how-to-setup-virtual-environments-in-python/
+
+- pip3 install virtualenv
+- mkdir project-1
+- cd project-1
+- python3 -m venv automate_report
+- source automate_report/bin/activate
+
+### Clone Project
+- cd automate_report
+- git clone https://github.com/AnggaPradiktas/digitalskola.git
+- balik repo project-1 atau pakai fullpath
+- source automate_report/bin/activate atau ~/Documents/project-1/automate_report/bin/activate
+
+### Global Env
+- Just git clone https://github.com/AnggaPradiktas/digitalskola.git

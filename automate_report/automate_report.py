@@ -1,25 +1,28 @@
 #Membuat Automated Reporting (Table & Grafik), dan dikirim ke discords
+#Dataset - https://www.kaggle.com/datasets/aungpyaeap/supermarket-sales
 
 import pandas as pd #pandas untuk membuat dataframe(df)
 from openpyxl import load_workbook #untuk berinterkasi antara python & excel file
+#https://openpyxl.readthedocs.io/en/latest/api/openpyxl.worksheet.worksheet.html
 from openpyxl.styles import *
 from openpyxl.chart import *
 from openpyxl.chart.shapes import GraphicalProperties
 from openpyxl.chart.label import DataLabelList
+import json
 
 
 input_file = 'input_data/supermarket_sales.xlsx'
-output_file = 'data_output/report_penjualan_2019.xlsx'
-webhook_url = 'https://discord.com/api/webhooks/1023952134464614481/fE8NOW-hUPUdPStwt0wlPArWjou4UsZPptcR8BeVXso9ZzioCD1pmK7jdyTny20Ffz24'
+output_file = 'output_data/report_penjualan_2019.xlsx'
+# Opening JSON file
+f = open('configs/webhook.json')
+data = json.load(f)
+webhook_url = data['webhook_url']
 
-##PART 1 - LOAD DATASET
+##PART 1 - LOAD DATASET\
 df = pd.read_excel(input_file)
 
 #Penjualan Total per Gender & Product Line
-df = df.pivot_table(index='Gender', 
-                    columns='Product line', 
-                    values='Total', 
-                    aggfunc='sum').round()
+df = df.pivot_table(index='Gender', columns='Product line', values='Total', aggfunc='sum').round()
 
 print('Save dataframe to excel...')
 
@@ -38,7 +41,18 @@ max_column = wb.active.max_column
 min_row = wb.active.min_row
 max_row = wb.active.max_row
 
-print(min_column, max_column, min_row, max_row)
+# Adjusting the cell width
+# https://openpyxl.readthedocs.io/en/stable/api/openpyxl.worksheet.dimensions.html?highlight=dimensions
+from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
+from openpyxl.utils import get_column_letter
+
+# ws = wb["Report"]
+dim_holder = DimensionHolder(worksheet=wb.active)
+
+for col in range(wb.active.min_column, wb.active.max_column + 1):
+    dim_holder[get_column_letter(col)] = ColumnDimension(wb.active, min=col, max=col, width=20)
+
+wb.active.column_dimensions = dim_holder
 
 barchart = BarChart()
 
