@@ -37,12 +37,14 @@ class ExcelReportPlugin():
 
     def read_input_file(self):
         df = pd.read_excel(self.input_file)
-        logging.info(df.head())
+        # df['Date'] = pd.to_datetime(df['Date']).dt.date
+        df['Date'] = pd.to_datetime(df['Date']).dt.strftime("%Y-%m-%d")
+        print(df['Date'].head())
         return df
 
 
     def transform(self, df:pd.DataFrame) -> pd.DataFrame:
-        df_transform = df.pivot_table(index='Gender', 
+        df_transform = df.pivot_table(index=['Gender', 'Date'],
                                     columns='Product line', 
                                     values='Total', 
                                     aggfunc='sum').round()
@@ -51,6 +53,7 @@ class ExcelReportPlugin():
 
     def create_output_file(self, df):
         print('Save dataframe to excel...')
+        # with pd.ExcelWriter(self.output_file, date_format='YYYY-MM-DD', datetime_format='YYYY-MM-DD') as writer:
         df.to_excel(self.output_file, 
                         sheet_name='Report', 
                         startrow=4)
@@ -69,7 +72,7 @@ class ExcelReportPlugin():
         barchart = BarChart()
 
         data = Reference(workbook, 
-                        min_col=min_column+1,
+                        min_col=min_column+2,
                         max_col=max_column,
                         min_row=min_row,
                         max_row=max_row
@@ -77,7 +80,7 @@ class ExcelReportPlugin():
 
         categories = Reference(workbook,
                                 min_col=min_column,
-                                max_col=min_column,
+                                max_col=min_column+1,
                                 min_row=min_row+1,
                                 max_row=max_row
                                 )
@@ -86,9 +89,11 @@ class ExcelReportPlugin():
         barchart.set_categories(categories)
 
 
-        workbook.add_chart(barchart, 'B12')
+        workbook.add_chart(barchart, 'J5')
         barchart.title = 'Sales berdasarkan Produk'
         barchart.style = 2
+        barchart.height = 20 # default is 7.5
+        barchart.width = 80 # default is 15    
 
 
     def add_total(self, max_column, max_row, min_row, wb):
